@@ -3,7 +3,7 @@ pipeline {
         kubernetes {
             label 'Java-build'
             defaultContainer 'jnlp'
-            yaml '''apiVersion: v1
+            yaml """apiVersion: v1
                     kind: Pod
                     metadata:
                       labels:
@@ -14,7 +14,7 @@ pipeline {
                           image: maven:alpine
                           command:
                             - cat
-                          tty: true'''
+                          tty: true"""
         }
     }
     stages {
