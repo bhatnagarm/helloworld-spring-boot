@@ -1,0 +1,44 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: helloworld-backend-production
+spec:
+  replicas: 4 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      name: helloworld
+      labels:
+        app: helloworld
+        role: backend
+        env: production
+    spec:
+      containers:
+        - name: helloworld
+          image: localhost:5000/helloworld:0.0.1-SNAPSHOT
+#          resources:
+#            limits:
+#              memory: "500Mi"
+#              cpu: "100m"
+          imagePullPolicy: Always
+          readinessProbe:
+            # Readiness probe is used to check if this app is ready to serve traffic.
+            httpGet:
+              port: 8080
+              path: /actuator/health/readiness
+            initialDelaySeconds: 10
+          livenessProbe:
+            # Liveness probe is used to check if this app is responding to requests
+            # (after it is marked as "ready").
+            httpGet:
+              port: 8080
+              path: /actuator/health/liveness
+            initialDelaySeconds: 30
+            periodSeconds: 3
+            env:
+              - name: COMPONENT
+                value: backend
+              - name: VERSION
+                value: production
+          ports:
+            - name: backend
+              containerPort: 8080

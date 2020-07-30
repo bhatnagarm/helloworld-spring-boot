@@ -1,0 +1,17 @@
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app: helloworld-frontend-service-production
+  name: helloworld-frontend-service-production
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+      protocol: TCP
+  selector:
+    app: helloworld
+    role: frontend
+    env: canary

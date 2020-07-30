@@ -1,0 +1,47 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: helloworld-backend-canary
+spec:
+  replicas: 2 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      name: helloworld
+      labels:
+        app: helloworld
+        role: backend
+        env: canary
+    spec:
+      containers:
+        - name: helloworld
+          image: localhost:5000/helloworld
+#          resources:
+#            limits:
+#              memory: "500Mi"
+#              cpu: "100m"
+          imagePullPolicy: Always
+          readinessProbe:
+            # Readiness probe is used to check if this app is ready to serve traffic.
+            httpGet:
+              port: 8080
+              path: /actuator/health/readiness
+            initialDelaySeconds: 10
+          livenessProbe:
+            # Liveness probe is used to check if this app is responding to requests
+            # (after it is marked as "ready").
+            httpGet:
+              port: 8080
+              path: /actuator/health/liveness
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          env:
+            - name: COMPONENT
+              value: backend
+            - name: VERSION
+              value: canary
+          ports:
+            - name: backend
+              containerPort: 8080
+  selector:
+    matchLabels:
+      app: helloworld

@@ -1,0 +1,17 @@
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app: helloworld-backend-service-production
+  name: helloworld-backend-service-production
+spec:
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+  selector:
+    role: backend
+    app: helloworld
+  sessionAffinity: None
+  type: LoadBalancer
