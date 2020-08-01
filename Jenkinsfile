@@ -1,6 +1,7 @@
 def project = 'helloworld-spring-boot-demo'
 def appName = 'helloworld-spring-boot'
 def imageTag = "localhost:5000/${appName}:${env.BUILD_NUMBER}"
+def imageTagOnce = "localhost:5000/${appName}:1.0.0-SNAPSHOT"
 
 pipeline {
     agent {
@@ -30,16 +31,15 @@ spec:
         steps {
           container('maven') {
             sh 'mvn clean install'
-            sh "echo ${imageTag}"
           }
         }
       }
-      /*stage('Build docker container') {
+      stage('Build docker container') {
         steps {
             container('maven') {
-                sh "docker build -t ${imageTag} ."
+                sh "docker build -t ${imageTagOnce} ."
             }
         }
-      }*/
+      }
     }
 }
