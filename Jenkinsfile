@@ -11,17 +11,17 @@ pipeline {
 apiVersion: v1
 kind: Pod
 metadata:
-labels:
+  labels:
     component: ci
-    spec:
-        # Use service account that can deploy to all namespaces
-        serviceAccount: jenkins
-        containers:
-        - name: maven
-          image: maven:3.6.3-jdk-14-slim
-          command:
-          - /bin/sh
-          tty: true
+spec:
+    # Use service account that can deploy to all namespaces
+    #serviceAccount: jenkins
+  containers:
+  - name: maven
+    image: maven:3.6.3-jdk-14-slim
+    command:
+      - /bin/sh
+    tty: true
 """
         }
     }
