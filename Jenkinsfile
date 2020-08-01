@@ -15,26 +15,21 @@ labels:
     component: ci
     spec:
         # Use service account that can deploy to all namespaces
+        serviceAccount: jenkins
         containers:
         - name: maven
-          image: maven:alpine
+          image: maven:3.6.3-jdk-14-slim
           command:
-          - cat
-          tty: true"""
+          - /bin/sh
+          tty: true
+"""
         }
     }
     stages {
       stage('Run maven') {
         steps {
           container('maven') {
-            sh 'mvn clean compile'
-          }
-        }
-      }
-      stage('Test') {
-        steps {
-          container('maven') {
-            sh 'mvn clean verify'
+            sh 'mvn -version'
           }
         }
       }
