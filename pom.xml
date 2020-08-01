@@ -56,10 +56,11 @@
 					<image>
 						<name>${project.artifactId}:${project.version}</name>
 					</image>
+					<!--<layout>LAYERED_JAR</layout>-->
 					<layers>
 						<enabled>true</enabled>
-						<includeLayerTools>false</includeLayerTools>
-						<configuration>${project.basedir}/src/layers.xml</configuration>
+						<includeLayerTools>true</includeLayerTools>
+						<!--<configuration>${project.basedir}/src/layers.xml</configuration>-->
 					</layers>
 				</configuration>
 			</plugin>
