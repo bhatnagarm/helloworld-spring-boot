@@ -18,7 +18,7 @@ spec:
     #serviceAccount: jenkins
   containers:
   - name: maven
-    image: maven:3.6.3-jdk-14-slim
+    image: maven:3.6.3-openjdk-14-slim
     command:
       - /bin/sh
     tty: true
