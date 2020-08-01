@@ -50,6 +50,7 @@ spec:
         steps {
             container('docker') {
                 sh "docker build -t ${imageTagOnce} ."
+                sh "docker push ${imageTagOnce}"
             }
         }
       }
