@@ -51,6 +51,8 @@ spec:
             container('docker') {
                 sh "docker build -t ${imageTagOnce} ."
                 sh "docker push ${imageTagOnce}"
+                sh "echo \"imageTagOnce = ${imageTagOnce}\" > properties.txt"
+                archiveArtifacts properties.txt
             }
         }
       }

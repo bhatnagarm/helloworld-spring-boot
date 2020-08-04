@@ -42,6 +42,7 @@ spec:
           ports:
             - name: backend
               containerPort: 8080
+      terminationGracePeriodSeconds: 5
   selector:
     matchLabels:
       app: helloworld
