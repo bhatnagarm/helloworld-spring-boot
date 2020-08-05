@@ -25,7 +25,7 @@ public class HelloWorldController {
         final OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         final Request request = new Request.Builder()
-                .url("https://source.unsplash.com/800x600/?cat") //TODO:cat
+                .url("https://source.unsplash.com/800x600/?artic-penguins") //TODO:artic-penguins
                 .method("GET", null)
                 .build();
         final byte[] image = client.newCall(request).execute().body().bytes();
