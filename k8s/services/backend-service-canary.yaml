@@ -3,10 +3,11 @@ apiVersion: v1
 metadata:
   labels:
     app: helloworld-backend-service-canary
+  namespace: spinnaker
   name: helloworld-backend-service-canary
 spec:
   ports:
-    - name: http
+    - name: 8080-8080
       port: 8080
       targetPort: 8080
       protocol: TCP
@@ -14,5 +15,5 @@ spec:
     role: backend
     app: helloworld
     env: canary
-#  sessionAffinity: None
-  type: LoadBalancer
+  sessionAffinity: None
+  type: NodePort

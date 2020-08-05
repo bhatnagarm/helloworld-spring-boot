@@ -3,15 +3,16 @@ apiVersion: v1
 metadata:
   labels:
     app: helloworld-backend-service-production
+  namespace: default
   name: helloworld-backend-service-production
 spec:
   ports:
-    - name: http
+    - name: 8080-8080
       port: 8080
-      targetPort: 8080
       protocol: TCP
+      targetPort: 8080
   selector:
     role: backend
     app: helloworld
   sessionAffinity: None
-  type: LoadBalancer
+  type: NodePort
