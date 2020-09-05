@@ -1,0 +1,6 @@
+favorite:
+  drink: coffee
+  food: pizza
+jasypt:
+  encryptor:
+    password: whatismypassword

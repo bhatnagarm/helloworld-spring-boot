@@ -2,6 +2,7 @@ package com.techartworks.helloworld;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -10,14 +11,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotBlank;
 import java.io.IOException;
 
 @RestController
 public class HelloWorldController {
 
+    @NotBlank
+    @Value("${secret.property}")
+    private String property;
+
     @RequestMapping("/hello")
     public String hello() {
-        return "Hello World";
+        return "Hello " + this.property;
     }
 
     @GetMapping("/random_image")

@@ -39,6 +39,11 @@ spec:
               value: backend
             - name: VERSION
               value: canary
+            - name: jasypt.encryptor.password
+              valueFrom:
+                configMapKeyRef:
+                  name: helloworld-backend-configmap
+                  key: jasypt.encryptor.password
           ports:
             - name: backend
               containerPort: 8080
