@@ -1,15 +1,17 @@
-kind: Deployment
 apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: helloworld-backend
+  name: helloworld-v1
+  labels:
+    app: helloworld
+    version: v1
 spec:
   replicas: 2 # tells deployment to run 2 pods matching the template
   template:
     metadata:
-      name: helloworld
       labels:
         app: helloworld
-        role: backend
+        version: v1
         env: production
     spec:
       containers:
@@ -45,8 +47,7 @@ spec:
                   name: helloworld-backend-configmap
                   key: JASYPT_ENCRYPTOR_PASSWORD
           ports:
-            - name: backend
-              containerPort: 8080
+            - containerPort: 8080
       terminationGracePeriodSeconds: 5
   selector:
     matchLabels:

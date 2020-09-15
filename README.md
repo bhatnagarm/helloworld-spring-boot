@@ -13,12 +13,15 @@ run with Jenkins and be canary deployed with Spinnaker.
 
 
 ### Starting the application
-mvn clean verify
-docker build -t localhost:5000/helloworld .
-docker push localhost:5000/helloworld
-kubectl apply -f k8s/configmap/helloworld-backend-configmap.yaml
-kubectl apply -f k8s/backend-production.yaml
-kubectlctl apply -f k8s/services/backend-service-production.yaml
+    mvn clean verify
+    docker build -t localhost:5000/helloworld .
+    docker push localhost:5000/helloworld
+    kubectl apply -f k8s/configmap/helloworld-backend-configmap.yaml
+    kubectl apply -f k8s/backend-production.yaml
+Is Istio enabled 
+    
+    kubectl apply -f <(istioctl kube-inject -f k8s/backend-production.yaml)
+    kubectl apply -f k8s/services/backend-service-production.yaml
 
 ### Config management and security
 It is always better to get the developers to have configuration where they can use it comfortably. So this application 
