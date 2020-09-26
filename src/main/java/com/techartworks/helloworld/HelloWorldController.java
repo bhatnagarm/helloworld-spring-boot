@@ -3,6 +3,8 @@ package com.techartworks.helloworld;
 import com.techartworks.helloworld.domain.model.CountryInfo;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +23,8 @@ import java.util.Map;
 
 @RestController
 public class HelloWorldController {
+
+    private final static Logger log = LoggerFactory.getLogger(HelloWorldController.class);
 
     @NotBlank
     @Value("${secret.property}")
@@ -57,7 +61,8 @@ public class HelloWorldController {
 
     @RequestMapping("/covid")
     public CountryInfo[] covid19info() {
-        return restTemplate.getForObject("http://covid19info-backend-service-production.default.svc.cluster.local/covidinfo", CountryInfo[].class);
+        log.warn("Call to HelloWorld Rest API");
+        return restTemplate.getForObject("http://covid19info:8080/covidinfo", CountryInfo[].class);
     }
 
 
