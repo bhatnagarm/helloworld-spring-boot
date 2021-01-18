@@ -30,6 +30,10 @@ public class HelloWorldController {
     @Value("${secret.property}")
     private String property;
 
+    @NotBlank
+    @Value("${covid.url}")
+    private String covidUrl;
+
     @Autowired
     private RestTemplate restTemplate;
 
@@ -62,7 +66,7 @@ public class HelloWorldController {
     @RequestMapping("/covid")
     public CountryInfo[] covid19info() {
         log.warn("Call to HelloWorld Rest API");
-        return restTemplate.getForObject("http://covid19info:8080/covidinfo", CountryInfo[].class);
+        return restTemplate.getForObject(covidUrl, CountryInfo[].class);
     }
 
 
