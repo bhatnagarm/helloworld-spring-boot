@@ -16,10 +16,13 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import javax.validation.constraints.NotBlank;
 import java.io.IOException;
 import java.util.Map;
+
 
 @RestController
 public class HelloWorldController {
@@ -50,7 +53,7 @@ public class HelloWorldController {
     }
 
     @GetMapping("/random_image")
-    public ResponseEntity<byte[]> random_image(@RequestHeader final HttpHeaders headers)  throws IOException {
+    public ResponseEntity<byte[]> randomImage(@RequestHeader final HttpHeaders headers)  throws IOException {
         final OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         final Request request = new Request.Builder()
@@ -64,9 +67,21 @@ public class HelloWorldController {
     }
 
     @RequestMapping("/covid")
-    public CountryInfo[] covid19info() {
+    public CountryInfo[] covid19Info() {
         log.warn("Call to HelloWorld Rest API");
         return restTemplate.getForObject(covidUrl, CountryInfo[].class);
+    }
+
+    @GetMapping(value = "/covidasync")
+    public CountryInfo[] covid19infoAsync() {
+        log.info("Call to HelloWorld Rest API Non-Blocking !");
+        final Mono<CountryInfo[]> requestedValue =  WebClient.create()
+                .get()
+                .uri(covidUrl)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(CountryInfo[].class).log();
+        return requestedValue.block();
     }
 
 
