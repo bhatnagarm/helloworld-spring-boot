@@ -101,6 +101,33 @@
 				<artifactId>jasypt-maven-plugin</artifactId>
 				<version>3.0.3</version>
 			</plugin>
+			<!--  Git Commit Plugin - generates git.properties -->
+			<plugin>
+				<groupId>io.github.git-commit-id</groupId>
+				<artifactId>git-commit-id-maven-plugin</artifactId>
+				<version>5.0.0</version>
+				<executions>
+					<execution>
+						<id>get-the-git-infos</id>
+						<goals>
+							<goal>revision</goal>
+						</goals>
+						<phase>initialize</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<generateGitPropertiesFile>true</generateGitPropertiesFile>
+					<dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+					<offline>false</offline>
+					<includeOnlyProperties>
+						<includeOnlyProperty>^git.commit.id.(abbrev|full)$</includeOnlyProperty>
+						<includeOnlyProperty>git.branch</includeOnlyProperty>
+						<includeOnlyProperty>git.commit.time</includeOnlyProperty>
+					</includeOnlyProperties>
+					<commitIdGenerationMode>full</commitIdGenerationMode>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 
