@@ -6,8 +6,8 @@ cloud native and work with Kuberneties. It has build setup to be able to
 run with Jenkins and be canary deployed with Spinnaker.
 
 ### Application uses 
-* Spring-boot 2.3
-* Jdk 14
+* Spring-boot 2.7
+* Jdk 17
 * Jenkins Kuberneties Agent
 * Kubernetes
 
