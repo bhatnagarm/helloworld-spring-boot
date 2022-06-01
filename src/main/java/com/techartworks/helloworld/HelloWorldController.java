@@ -11,6 +11,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,8 +37,12 @@ public class HelloWorldController {
     private RestTemplate restTemplate;
 
     @RequestMapping("/hello")
-    public String hello(@RequestHeader Map<String, String> headers) {
+    @PreAuthorize("isAuthenticated()")
+    public String hello(@RequestHeader Map<String, String> headers,
+                        @AuthenticationPrincipal Jwt jwt) {
         return "Hello " + this.property + "\n" +
+                "principal_subject: " + jwt.getSubject() + "\n" +
+                jwt.getClaimAsString("preferred_username") + "\n" +
                 "x-request-id: " + headers.get("x-request-id") + "\n" +
                 "x-b3-traceid: " + headers.get("x-b3-traceid") + "\n" +
                 "x-b3-spanid: " + headers.get("x-b3-spanid") + "\n" +
