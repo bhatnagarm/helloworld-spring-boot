@@ -37,12 +37,12 @@ public class HelloWorldController {
     private RestTemplate restTemplate;
 
     @RequestMapping("/hello")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("principal.getClaimAsString('client_id') == 'test-client'")
     public String hello(@RequestHeader Map<String, String> headers,
                         @AuthenticationPrincipal Jwt jwt) {
         return "Hello " + this.property + "\n" +
                 "principal_subject: " + jwt.getSubject() + "\n" +
-                jwt.getClaimAsString("preferred_username") + "\n" +
+                "preferred_username: " + jwt.getClaimAsString("preferred_username") + "\n" +
                 "x-request-id: " + headers.get("x-request-id") + "\n" +
                 "x-b3-traceid: " + headers.get("x-b3-traceid") + "\n" +
                 "x-b3-spanid: " + headers.get("x-b3-spanid") + "\n" +
@@ -69,7 +69,7 @@ public class HelloWorldController {
     @RequestMapping("/covid")
     public CountryInfo[] covid19info() {
         log.warn("Call to HelloWorld Rest API");
-        return restTemplate.getForObject("http://covid19info:8080/covidinfo", CountryInfo[].class);
+        return restTemplate.getForObject("https://api.covid19api.com/live/country/south-africa/status/confirmed", CountryInfo[].class);
     }
 
 
