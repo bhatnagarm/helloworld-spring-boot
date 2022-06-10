@@ -1,6 +1,6 @@
 package com.techartworks.helloworld.integTest;
 
-import com.techartworks.helloworld.integTest.utils.BearerTokenRequestPostProcessor;
+import com.techartworks.helloworld.library.util.BearerTokenRequestPostProcessor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

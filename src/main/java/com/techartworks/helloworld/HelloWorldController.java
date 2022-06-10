@@ -16,7 +16,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -36,7 +35,7 @@ public class HelloWorldController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @RequestMapping("/hello")
+    @GetMapping("/hello")
     @PreAuthorize("principal.getClaimAsString('client_id') == 'test-client'")
     public String hello(@RequestHeader Map<String, String> headers,
                         @AuthenticationPrincipal Jwt jwt) {
@@ -66,7 +65,7 @@ public class HelloWorldController {
         return new ResponseEntity<>(image, headers, HttpStatus.OK);
     }
 
-    @RequestMapping("/covid")
+    @GetMapping("/covid")
     public CountryInfo[] covid19info() {
         log.warn("Call to HelloWorld Rest API");
         return restTemplate.getForObject("https://api.covid19api.com/live/country/south-africa/status/confirmed", CountryInfo[].class);

@@ -1,4 +1,4 @@
-package com.techartworks.helloworld.integTest.utils;
+package com.techartworks.helloworld.library.util;
 
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
