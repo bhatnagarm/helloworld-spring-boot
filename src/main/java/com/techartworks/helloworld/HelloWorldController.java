@@ -36,12 +36,12 @@ public class HelloWorldController {
     private RestTemplate restTemplate;
 
     @GetMapping("/hello")
-    @PreAuthorize("principal.getClaimAsString('client_id') == 'test-client'")
-    public String hello(@RequestHeader Map<String, String> headers,
-                        @AuthenticationPrincipal Jwt jwt) {
+    //@PreAuthorize("principal.getClaimAsString('client_id') == 'test-client'")
+    public String hello(@RequestHeader Map<String, String> headers/*,
+                        @AuthenticationPrincipal Jwt jwt*/) {
         return "Hello " + this.property + "\n" +
-                "principal_subject: " + jwt.getSubject() + "\n" +
-                "preferred_username: " + jwt.getClaimAsString("preferred_username") + "\n" +
+                /*"principal_subject: " + jwt.getSubject() + "\n" +
+                "preferred_username: " + jwt.getClaimAsString("preferred_username") + "\n" +*/
                 "x-request-id: " + headers.get("x-request-id") + "\n" +
                 "x-b3-traceid: " + headers.get("x-b3-traceid") + "\n" +
                 "x-b3-spanid: " + headers.get("x-b3-spanid") + "\n" +

@@ -9,4 +9,6 @@ import org.springframework.context.annotation.Configuration;
 @Data
 public class Oauth2Properties {
     private String jwkSetUri;
+    private String issuerUri;
+    private String jwsAlgorithm;
 }
