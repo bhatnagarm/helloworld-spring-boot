@@ -17,7 +17,6 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
 
-
 import java.util.List;
 
 @EnableWebSecurity
@@ -66,7 +65,10 @@ public abstract class OAuth2ClientSecurityConfig {
     JwtDecoder jwtDecoder() {
         return NimbusJwtDecoder
                 .withJwkSetUri(oauth2Properties.getJwkSetUri())
-                .jwsAlgorithm(SignatureAlgorithm.from(oauth2Properties.getJwsAlgorithm()))
+                .jwsAlgorithms(signatureAlgorithms -> {
+                    oauth2Properties.getJwsAlgorithm()
+                            .forEach(algorithm -> signatureAlgorithms.add(SignatureAlgorithm.from(algorithm)));
+                })
                 .build();
     }
 
