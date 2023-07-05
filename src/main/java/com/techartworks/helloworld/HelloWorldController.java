@@ -12,7 +12,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,7 +37,6 @@ public class HelloWorldController {
     private RestTemplate restTemplate;
 
     @GetMapping("/hello")
-//    @PreAuthorize("principal.getClaimAsString('client_id') == 'test-ac'")
     public String hello(@RequestHeader Map<String, String> headers,
                         @AuthenticationPrincipal Jwt jwt) {
         return "Hello " + this.property + "\n" +
@@ -54,7 +52,6 @@ public class HelloWorldController {
     }
 
     @GetMapping("/createmembermock")
-    @PreAuthorize("'vff_web' == authentication.principal.clientId")
     public String createMemberMock(@RequestBody final LoginForm loginForm, @RequestHeader Map<String, String> headers) {
         return "Hello " + this.property + "\n" +
                 "LoginForm.FirstName: " + loginForm.getFirstName() + "\n" +
