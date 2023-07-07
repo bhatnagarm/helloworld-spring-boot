@@ -5,10 +5,11 @@ import com.techartworks.helloworld.library.model.Oauth2Properties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
@@ -21,7 +22,7 @@ import java.util.List;
 
 @EnableWebSecurity
 @Import(SecurityProblemSupport.class)
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 public abstract class OAuth2ClientSecurityConfig {
 
     @Autowired
@@ -35,28 +36,24 @@ public abstract class OAuth2ClientSecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring().antMatchers("/actuator","/actuator/*", "/private/api-docs");
+        return web -> web.ignoring().requestMatchers("/actuator","/actuator/*", "/private/api-docs");
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
         http
-                .csrf().disable()   // csrf should be disabled for non-browser based URIs
+                .csrf(AbstractHttpConfigurer::disable)   // csrf should be disabled for non-browser based URIs
                 .authorizeHttpRequests((authz) -> authz
-                        .antMatchers(securedPaths().toArray(new String[0]))
+                        .requestMatchers(securedPaths().toArray(new String[0]))
                         .authenticated()
                 )
-                .httpBasic().authenticationEntryPoint(securityProblemSupport)
-                .and()
-                .sessionManagement().enableSessionUrlRewriting(false)
-                .sessionFixation().none()
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .exceptionHandling().authenticationEntryPoint(securityProblemSupport)
-                .and()
-                .exceptionHandling().accessDeniedHandler(securityProblemSupport)
-                .and()
+                .httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(securityProblemSupport))
+                .sessionManagement(session -> session.enableSessionUrlRewriting(false)
+                        .sessionFixation().none()
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(exceptionHandler -> exceptionHandler
+                        .authenticationEntryPoint(securityProblemSupport)
+                        .accessDeniedHandler(securityProblemSupport))
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
         return http.build();
     }
@@ -66,7 +63,7 @@ public abstract class OAuth2ClientSecurityConfig {
         return NimbusJwtDecoder
                 .withJwkSetUri(oauth2Properties.getJwkSetUri())
                 .jwsAlgorithms(signatureAlgorithms -> {
-                    oauth2Properties.getJwsAlgorithm()
+                    oauth2Properties.getJwsAlgorithms()
                             .forEach(algorithm -> signatureAlgorithms.add(SignatureAlgorithm.from(algorithm)));
                 })
                 .build();

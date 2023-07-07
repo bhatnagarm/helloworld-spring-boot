@@ -12,5 +12,5 @@ import java.util.List;
 public class Oauth2Properties {
     private String jwkSetUri;
     private String issuerUri;
-    private List<String> jwsAlgorithm;
+    private List<String> jwsAlgorithms;
 }
