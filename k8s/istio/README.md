@@ -1,6 +1,6 @@
 # Istio Configuration in Kubernetes
     curl -L https://istio.io/downloadIstio | sh -
-    export PATH="$PATH:/mnt/d/Mitul_Workspace/cloud_native/istio-1.7.0/bin"
+    export PATH="$PATH:/mnt/d/Mitul_Workspace/cloud_native/istio-1.34.4/bin"
 
 ### Enable default namespace for default
     kubectl label namespace default istio-injection=enabled
