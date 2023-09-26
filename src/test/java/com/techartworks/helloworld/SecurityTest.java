@@ -2,6 +2,8 @@ package com.techartworks.helloworld;
 
 import com.techartworks.helloworld.domain.model.CountryInfo;
 import com.techartworks.helloworld.library.TestSecurity;
+import com.techartworks.helloworld.library.util.KeycloakTestContainers;
+import io.restassured.RestAssured;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +28,6 @@ public class SecurityTest {
 
     @MockBean
     RestTemplate restTemplate;
-
     @Test
     void indexGreetsAuthenticatedUser() throws Exception {
         this.mockMvc.perform(get("/hello")

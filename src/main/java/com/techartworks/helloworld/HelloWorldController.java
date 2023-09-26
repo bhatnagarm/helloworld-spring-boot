@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +38,7 @@ public class HelloWorldController {
     private RestTemplate restTemplate;
 
     @GetMapping("/hello")
+    //@PreAuthorize("hasAnyAuthority('SCOPE_user.read')")
     public String hello(@RequestHeader Map<String, String> headers,
                         @AuthenticationPrincipal Jwt jwt) {
         return "Hello " + this.property + "\n" +
@@ -51,7 +53,7 @@ public class HelloWorldController {
                 "x-ot-span-context: " + headers.get("x-ot-span-context") + "\n";
     }
 
-    @GetMapping("/createmembermock")
+/*    @GetMapping("/createmembermock")
     public String createMemberMock(@RequestBody final LoginForm loginForm, @RequestHeader Map<String, String> headers) {
         return "Hello " + this.property + "\n" +
                 "LoginForm.FirstName: " + loginForm.getFirstName() + "\n" +
@@ -65,7 +67,7 @@ public class HelloWorldController {
                 "x-b3-sampled: " + headers.get("x-b3-sampled") + "\n" +
                 "x-b3-flags: " + headers.get("x-b3-flags") + "\n" +
                 "x-ot-span-context: " + headers.get("x-ot-span-context") + "\n";
-    }
+    }*/
 
     @GetMapping("/random_image")
     public ResponseEntity<byte[]> random_image(@RequestHeader final HttpHeaders headers)  throws IOException {
@@ -86,7 +88,5 @@ public class HelloWorldController {
         log.warn("Call to HelloWorld Rest API");
         return restTemplate.getForObject("https://api.covid19api.com/live/country/south-africa/status/confirmed", CountryInfo[].class);
     }
-
-
 
 }

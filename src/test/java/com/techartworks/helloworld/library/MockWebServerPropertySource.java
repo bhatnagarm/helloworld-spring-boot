@@ -5,7 +5,6 @@ import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.core.env.PropertySource;
 import org.springframework.http.HttpHeaders;
@@ -30,8 +29,6 @@ public class MockWebServerPropertySource extends PropertySource<MockWebServer> i
 
     private static final String NAME = "mockwebserver.url";
 
-    private static final Log logger = LogFactory.getLog(MockWebServerPropertySource.class);
-
     private boolean started;
 
     public MockWebServerPropertySource() {
@@ -47,9 +44,6 @@ public class MockWebServerPropertySource extends PropertySource<MockWebServer> i
     public Object getProperty(String name) {
         if (!name.equals(NAME)) {
             return null;
-        }
-        if (logger.isTraceEnabled()) {
-            logger.trace("Looking up the url for '" + name + "'");
         }
         String url = getUrl();
         return url;
@@ -84,8 +78,7 @@ public class MockWebServerPropertySource extends PropertySource<MockWebServer> i
         try {
             mockWebServer.start();
             this.started = true;
-        }
-        catch (final IOException ex) {
+        } catch (final IOException ex) {
             throw new RuntimeException("Could not start " + mockWebServer, ex);
         }
     }

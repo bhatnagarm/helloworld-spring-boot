@@ -6,7 +6,6 @@ import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 public class MockWebServerEnvironmentPostProcessor implements EnvironmentPostProcessor, DisposableBean {
-
     private final MockWebServerPropertySource propertySource = new MockWebServerPropertySource();
     @Override
     public void destroy() throws Exception {
