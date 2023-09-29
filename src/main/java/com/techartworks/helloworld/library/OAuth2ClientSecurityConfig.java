@@ -65,9 +65,9 @@ public abstract class OAuth2ClientSecurityConfig {
 
     JwtDecoder jwtDecoder() {
         return NimbusJwtDecoder
-                .withJwkSetUri(oauth2Properties.getJwkSetUri())
+                .withJwkSetUri(oauth2Properties.jwkSetUri())
                 .jwsAlgorithms(signatureAlgorithms -> {
-                    oauth2Properties.getJwsAlgorithms()
+                    oauth2Properties.jwsAlgorithms()
                             .forEach(algorithm -> signatureAlgorithms.add(SignatureAlgorithm.from(algorithm)));
                 })
                 .build();

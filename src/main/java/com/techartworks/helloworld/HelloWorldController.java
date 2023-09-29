@@ -1,7 +1,7 @@
 package com.techartworks.helloworld;
 
-import com.techartworks.helloworld.domain.model.CountryInfo;
-import com.techartworks.helloworld.library.model.LoginForm;
+import com.techartworks.helloworld.domain.model.Author;
+import jakarta.validation.constraints.NotBlank;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import org.slf4j.Logger;
@@ -12,16 +12,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import javax.validation.constraints.NotBlank;
 import java.io.IOException;
 import java.util.Map;
 
@@ -53,22 +50,6 @@ public class HelloWorldController {
                 "x-ot-span-context: " + headers.get("x-ot-span-context") + "\n";
     }
 
-/*    @GetMapping("/createmembermock")
-    public String createMemberMock(@RequestBody final LoginForm loginForm, @RequestHeader Map<String, String> headers) {
-        return "Hello " + this.property + "\n" +
-                "LoginForm.FirstName: " + loginForm.getFirstName() + "\n" +
-                "LoginForm.LastName: " + loginForm.getLastName() + "\n" +
-                "LoginForm.Email: " + loginForm.getEmail() + "\n" +
-                "LoginForm.Mobile: " + loginForm.getMobile() + "\n" +
-                "x-request-id: " + headers.get("x-request-id") + "\n" +
-                "x-b3-traceid: " + headers.get("x-b3-traceid") + "\n" +
-                "x-b3-spanid: " + headers.get("x-b3-spanid") + "\n" +
-                "x-b3-parentspanid: " + headers.get("x-b3-parentspanid") + "\n" +
-                "x-b3-sampled: " + headers.get("x-b3-sampled") + "\n" +
-                "x-b3-flags: " + headers.get("x-b3-flags") + "\n" +
-                "x-ot-span-context: " + headers.get("x-ot-span-context") + "\n";
-    }*/
-
     @GetMapping("/random_image")
     public ResponseEntity<byte[]> random_image(@RequestHeader final HttpHeaders headers)  throws IOException {
         final OkHttpClient client = new OkHttpClient().newBuilder()
@@ -83,10 +64,10 @@ public class HelloWorldController {
         return new ResponseEntity<>(image, headers, HttpStatus.OK);
     }
 
-    @GetMapping("/covid")
-    public CountryInfo[] covid19info() {
+    @GetMapping("/author")
+    public Author authorInfo() {
         log.warn("Call to HelloWorld Rest API");
-        return restTemplate.getForObject("https://api.covid19api.com/live/country/south-africa/status/confirmed", CountryInfo[].class);
+        return restTemplate.getForObject("http://openlibrary.org/authors/OL1A.json", Author.class);
     }
 
 }

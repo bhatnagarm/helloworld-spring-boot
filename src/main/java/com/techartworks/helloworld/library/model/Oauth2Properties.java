@@ -1,16 +1,16 @@
 package com.techartworks.helloworld.library.model;
 
-import lombok.Data;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
-@Configuration
+@Validated
 @ConfigurationProperties(prefix = "spring.security.oauth2.resourceserver.jwt")
-@Data
-public class Oauth2Properties {
-    private String jwkSetUri;
-    private String issuerUri;
-    private List<String> jwsAlgorithms;
+public record Oauth2Properties (@NotBlank String jwkSetUri,
+                                @NotBlank String issuerUri,
+                                @NotEmpty List<String> jwsAlgorithms
+                                ){
 }

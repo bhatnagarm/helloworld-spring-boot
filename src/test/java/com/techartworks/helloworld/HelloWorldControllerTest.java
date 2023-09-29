@@ -37,4 +37,11 @@ class HelloWorldControllerTest {
     @Test
     void covid19info() {
     }
+
+    @Test
+    void authorInfo() throws Exception {
+        this.mvc.perform(get("/author")
+                        .with(jwt().jwt((jwt) -> jwt.claim("client_id","test-client"))))
+                .andExpect(content().string(containsString("Sachi Routray")));
+    }
 }
