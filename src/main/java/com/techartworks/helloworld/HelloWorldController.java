@@ -1,6 +1,7 @@
 package com.techartworks.helloworld;
 
-import com.techartworks.helloworld.domain.model.CountryInfo;
+import com.techartworks.helloworld.domain.model.Author;
+import jakarta.validation.constraints.NotBlank;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import org.slf4j.Logger;
@@ -11,15 +12,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
-import javax.validation.constraints.NotBlank;
 import java.io.IOException;
 import java.util.Map;
 
@@ -40,9 +39,13 @@ public class HelloWorldController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @RequestMapping("/hello")
-    public String hello(@RequestHeader Map<String, String> headers) {
+    @GetMapping("/hello")
+    //@PreAuthorize("hasAnyAuthority('SCOPE_user.read')")
+    public String hello(@RequestHeader Map<String, String> headers,
+                        @AuthenticationPrincipal Jwt jwt) {
         return "Hello " + this.property + "\n" +
+                "principal_subject: " + jwt.getSubject() + "\n" +
+                "preferred_username: " + jwt.getClaimAsString("preferred_username") + "\n" +
                 "x-request-id: " + headers.get("x-request-id") + "\n" +
                 "x-b3-traceid: " + headers.get("x-b3-traceid") + "\n" +
                 "x-b3-spanid: " + headers.get("x-b3-spanid") + "\n" +
@@ -66,24 +69,11 @@ public class HelloWorldController {
         return new ResponseEntity<>(image, headers, HttpStatus.OK);
     }
 
-    @RequestMapping("/covid")
-    public CountryInfo[] covid19Info() {
+
+    @GetMapping("/author")
+    public Author authorInfo() {
         log.warn("Call to HelloWorld Rest API");
-        return restTemplate.getForObject(covidUrl, CountryInfo[].class);
+        return restTemplate.getForObject("http://openlibrary.org/authors/OL1A.json", Author.class);
     }
-
-    @GetMapping(value = "/covidasync")
-    public CountryInfo[] covid19infoAsync() {
-        log.info("Call to HelloWorld Rest API Non-Blocking !");
-        final Mono<CountryInfo[]> requestedValue =  WebClient.create()
-                .get()
-                .uri(covidUrl)
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .bodyToMono(CountryInfo[].class).log();
-        return requestedValue.block();
-    }
-
-
 
 }

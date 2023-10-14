@@ -9,26 +9,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.containsString;
-
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(HelloWorldController.class)
 @TestSecurity
-class HelloWorldControllerTest {
+public class SecurityTest {
 
     @Autowired
-    private MockMvc mvc;
+    MockMvc mockMvc;
 
     @MockBean
     RestTemplate restTemplate;
@@ -39,15 +36,14 @@ class HelloWorldControllerTest {
     }
 
     @Test
-    void hello() throws Exception {
-        this.mvc.perform(get("/hello")
+    void indexGreetsAuthenticatedUser() throws Exception {
+        this.mockMvc.perform(get("/hello")
                         .with(jwt().jwt((jwt) -> jwt.claim("client_id","test-client"))))
-                .andExpect(content().string(containsString("Hello world")))
-                .andExpect(status().is2xxSuccessful());
+                .andExpect(content().string(containsString("Hello world")));
     }
 
     @Test
-    void authorInfo() throws Exception {
+    void testCovidInformation() throws Exception {
         Author author = new Author(
                 "Sachi Routray",
                 "Sachi Rautroy",
@@ -79,10 +75,8 @@ class HelloWorldControllerTest {
                 new Author.LastModified("/type/datetime", "2021-08-01T00:38:55.954708")
         );
         Mockito.when(restTemplate.getForObject(anyString(), eq(Author.class))).thenReturn(author);
-        this.mvc.perform(get("/author")
-                        .with(jwt().jwt((jwt) -> jwt.claim("client_id","test-client"))))
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(status().is2xxSuccessful())
+        this.mockMvc.perform(get("/author")
+                        .with(jwt()))
                 .andExpect(content().string(containsString("Sachi Routray")));
     }
 }
