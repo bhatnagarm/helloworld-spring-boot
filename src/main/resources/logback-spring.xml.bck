@@ -15,7 +15,7 @@
         <appender-ref ref="Console" />
     </root>
 
-    <!-- LOG "com.baeldung*" at TRACE level -->
+    <!-- LOG "com.techartworks*" at TRACE level -->
     <logger name="com.techartworks.helloworld" level="INFO" additivity="false">
         <appender-ref ref="Console" />
     </logger>

@@ -3,6 +3,9 @@ target/
 !**/src/main/**
 !**/src/test/**
 
+### MacOS files ###
+.DS_Store
+
 ### STS ###
 .apt_generated
 .classpath
@@ -13,6 +16,7 @@ target/
 .sts4-cache
 
 ### IntelliJ IDEA ###
+Users
 .idea
 *.iws
 *.iml

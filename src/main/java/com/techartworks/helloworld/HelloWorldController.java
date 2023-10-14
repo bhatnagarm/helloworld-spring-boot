@@ -22,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.util.Map;
 
+
 @RestController
 public class HelloWorldController {
 
@@ -30,6 +31,10 @@ public class HelloWorldController {
     @NotBlank
     @Value("${secret.property}")
     private String property;
+
+    @NotBlank
+    @Value("${covid.url}")
+    private String covidUrl;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -51,7 +56,7 @@ public class HelloWorldController {
     }
 
     @GetMapping("/random_image")
-    public ResponseEntity<byte[]> random_image(@RequestHeader final HttpHeaders headers)  throws IOException {
+    public ResponseEntity<byte[]> randomImage(@RequestHeader final HttpHeaders headers)  throws IOException {
         final OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         final Request request = new Request.Builder()
@@ -63,6 +68,7 @@ public class HelloWorldController {
         headers.setContentLength(image.length);
         return new ResponseEntity<>(image, headers, HttpStatus.OK);
     }
+
 
     @GetMapping("/author")
     public Author authorInfo() {
