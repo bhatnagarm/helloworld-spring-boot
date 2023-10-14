@@ -2,6 +2,7 @@ package com.techartworks.helloworld;
 
 import com.techartworks.helloworld.domain.model.Author;
 import com.techartworks.helloworld.library.TestSecurity;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,11 @@ public class SecurityTest {
 
     @MockBean
     RestTemplate restTemplate;
+
+    @BeforeAll
+    public static void before() {
+        System.setProperty("jasypt.encryptor.password", "whatismypassword");
+    }
 
     @Test
     void indexGreetsAuthenticatedUser() throws Exception {
@@ -71,6 +77,6 @@ public class SecurityTest {
         Mockito.when(restTemplate.getForObject(anyString(), eq(Author.class))).thenReturn(author);
         this.mockMvc.perform(get("/author")
                         .with(jwt()))
-                .andExpect(content().string(containsString("South Africa")));
+                .andExpect(content().string(containsString("Sachi Routray")));
     }
 }

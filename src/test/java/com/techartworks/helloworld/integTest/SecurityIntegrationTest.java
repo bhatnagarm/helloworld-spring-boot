@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 public class SecurityIntegrationTest extends KeycloakTestContainers {
 
     @Test
-    void indexGreetsAuthenticatedUser() throws Exception {
+    void indexGreetsAuthenticatedUser() {
         RestAssured.given().header("Authorization", getClientCredBearer()).when().get("/hello")
                 .then().body(CoreMatchers.containsString("Hello world"));
     }
