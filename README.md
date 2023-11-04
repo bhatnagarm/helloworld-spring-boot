@@ -5,14 +5,9 @@ This application is a sample application which works is designed to be
 cloud native and work with Kuberneties. It has build setup to be able to 
 run with Jenkins and be canary deployed with Spinnaker.
 
-### Application uses 
-<<<<<<< HEAD
+### Application uses
 * Spring-boot 3.1.1
 * Jdk 17
-=======
-* Spring-boot 2.4
-* Jdk 14
->>>>>>> 04515d31e563e188bd8b9f1da9f559f228d0daca
 * Jenkins Kuberneties Agent
 * Kubernetes
 
