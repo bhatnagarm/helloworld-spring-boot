@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.1.2</version>
+		<version>3.2.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.techartworks</groupId>
@@ -16,7 +16,7 @@
 
 	<properties>
 		<java.version>17</java.version>
-		<release.train.version>2022.0.3</release.train.version>
+		<release.train.version>2023.0.0</release.train.version>
 		<joda-time.version>2.12.5</joda-time.version>
 	</properties>
 
@@ -64,9 +64,20 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
 			<groupId>org.zalando</groupId>
 			<artifactId>problem-spring-web</artifactId>
 			<version>0.29.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -96,7 +107,12 @@
 		<dependency>
 			<groupId>com.github.dasniko</groupId>
 			<artifactId>testcontainers-keycloak</artifactId>
-			<version>3.0.0</version>
+			<version>3.2.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>postgresql</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
